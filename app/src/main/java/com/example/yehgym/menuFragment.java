@@ -1,5 +1,6 @@
 package com.example.yehgym;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,19 @@ public class menuFragment extends Fragment {
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 FragmentTransaction replace = transaction.replace(R.id.container, cf);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button botonMapa = view.findViewById(R.id.mapa);
+        botonMapa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapaFragment mf = new mapaFragment();
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                FragmentTransaction replace = transaction.replace(R.id.container, mf);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

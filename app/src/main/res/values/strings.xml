@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">YehGym</string>
+    <string name="inicio_de_sesion">Inicio de sesión</string>
+    <string name="nombre_de_usuario">Nombre de usuario</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="no_tienes_una_cuenta">Create una cuenta</string>
+    <string name="server_error">Error al procesar la respuesta del servidor</string>
+    <string name="con_error">Error de conexión</string>
+    <string name="crear_cuenta_de_usuario">Crear cuenta de usuario</string>
+    <string name="correo_electronico">Correo electrónico</string>
+    <string name="crear_cuenta">Crear cuenta</string>
+    <string name="masculino">Hombre</string>
+    <string name="femenino">Mujer</string>
+    <string name="otro">Otro</string>
+    <string name="peso_kg">Kg</string>
+    <string name="genero">Género: </string>
+    <string name="genero_no_insertado">Género sin insertar</string>
+</resources>

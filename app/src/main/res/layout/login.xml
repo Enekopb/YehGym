@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Layout principal -->
+    <LinearLayout
+        android:layout_width="301dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <!-- TextView para el título de la actividad -->
+        <TextView
+            style="?attr/itemTextColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/inicio_de_sesion"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:visibility="visible" />
+
+        <!-- EditText para el nombre de usuario -->
+        <EditText
+            android:id="@+id/usernameEditText"
+            style="?attr/editTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="16dp"
+            android:autofillHints=""
+            android:hint="@string/nombre_de_usuario"
+            android:inputType="text"
+            android:minHeight="48dp" />
+
+        <!-- EditText para la contraseña -->
+        <EditText
+            android:id="@+id/passwordEditText"
+            style="?attr/editTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:hint="@string/contraseña"
+            android:inputType="textPassword"
+            android:minHeight="48dp" />
+
+        <!-- Botón para iniciar sesión -->
+        <Button
+            android:id="@+id/loginButton"
+            style="?attr/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/inicio_de_sesion" />
+
+        <!-- Botón para ir a la pantalla de registro -->
+        <Button
+            style="?attr/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:onClick="goToSignUpActivity"
+            android:text="@string/no_tienes_una_cuenta" />
+    </LinearLayout>
+
+</RelativeLayout>

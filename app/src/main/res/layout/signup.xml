@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Layout principal -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <!-- TextView para el nombre de la aplicación -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/crear_cuenta_de_usuario"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            tools:visibility="visible" />
+
+        <!-- EditText para el nombre de usuario -->
+        <EditText
+            android:id="@+id/usernameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="16dp"
+            android:hint="@string/nombre_de_usuario"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:autofillHints="" />
+
+        <!-- EditText para el correo electrónico -->
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:hint="@string/correo_electronico"
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp" />
+
+        <!-- EditText para la contraseña -->
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/contraseña"
+            android:inputType="textPassword"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/genero"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            tools:visibility="visible" />
+
+
+        <!-- RadioGroup para seleccionar el género -->
+        <RadioGroup
+            android:id="@+id/genderRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/maleRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/masculino" />
+
+            <RadioButton
+                android:id="@+id/femaleRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/femenino" />
+
+            <RadioButton
+                android:id="@+id/otroRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/otro" />
+
+        </RadioGroup>
+
+        <!-- EditText para el peso en kg -->
+        <EditText
+            android:id="@+id/weightEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="8dp"
+            android:hint="@string/peso_kg"
+            android:inputType="numberDecimal"
+            android:minHeight="48dp" />
+
+        <!-- Botón para crear una cuenta -->
+        <Button
+            android:id="@+id/signupButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/crear_cuenta"
+            style="?attr/buttonStyle"
+            android:layout_marginTop="16dp" />
+
+        <!-- Botón para ir a la pantalla de inicio de sesión -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/inicio_de_sesion"
+            android:layout_marginTop="16dp"
+            style="?attr/buttonStyle"
+            android:onClick="goToLogInActivity" />
+
+    </LinearLayout>
+
+</RelativeLayout>

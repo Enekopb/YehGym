@@ -13,6 +13,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,17 +27,29 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Login extends AppCompatActivity {
 
     private EditText usernameEditText, passwordEditText;
     private Button loginButton;
+    DatabaseReference db;
+    Boolean firebaseConnection;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            startActivity(new Intent(Login.this, MainActivity.class));
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
+        db = FirebaseDatabase.getInstance().getReference("users");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String languageCode = "en";
 
@@ -64,14 +81,13 @@ public class Login extends AppCompatActivity {
             String username = params[0];
             String password = params[1];
             String languageCode = params[2];
-
             try {
                 URL url = new URL(urlString);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
 
                 // Parámetros que se enviarán en la solicitud POST
-                String postData = "username=" + username + "&password=" + password + "&lang=" + languageCode;
+                String postData = "atleta=" + username + "&password=" + password + "&lang=" + languageCode;
                 urlConnection.setDoOutput(true);
                 urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
@@ -108,21 +124,47 @@ public class Login extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(result);
                     String status = jsonObject.optString("status");
                     String message = jsonObject.optString("message");
-                    if ("success".equals(status)) {
+                    String email = jsonObject.optString("email");
+                    String password = jsonObject.optString("password");
+                    if ("success".equals(status))
+                    {
                         // Usuario autenticado correctamente
                         Toast.makeText(Login.this, message, Toast.LENGTH_SHORT).show();
-                        // Guardar la información de inicio de sesión en las preferencias
-                        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        String username = usernameEditText.getText().toString().trim();
-                        editor.putString("usuario", username);
-                        editor.putBoolean("isLoggedIn", true);
-                        editor.apply();
-                        // Redirigir a la actividad principal u otra actividad según tu flujo de la aplicación
-                        Intent intent = new Intent(Login.this, MainActivity.class);
-                        startActivity(intent);
-                        finish(); // Finalizar la actividad de inicio de sesión para evitar volver atrás
-                    } else {
+                        firebaseConnection = false;
+                        // Firebase Authentication
+                        try
+                        {
+                            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                                    // Sign in success
+                                    Log.d("Login", "signInWithEmail:success");
+                                    // Continue with the server registration
+                                    // Guardar la información de inicio de sesión en las preferencias
+                                    SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("usuario", username);
+                                    editor.putString("email", email);
+                                    // Firebase Authentication
+                                    editor.putBoolean("isLoggedIn", true);
+                                    editor.apply();
+                                    // Redirigir a la actividad principal u otra actividad según tu flujo de la aplicación
+                                    Intent intent = new Intent(Login.this, MainActivity.class);
+                                    intent.putExtra("name", username);
+                                    startActivity(intent);
+                                    finish(); // Finalizar la actividad de inicio de sesión para evitar volver atrás                                } else {
+                                    // Sign in failed
+                                    Log.e("Login", "signInWithEmail:failure", task.getException());
+                                }
+                            });
+                        }
+                        catch (Exception e)
+                        {
+                            Log.e("Login", "Firebase authentication error: " + e.getMessage());
+                        }
+                    }
+                    else
+                    {
                         // Usuario no autenticado
                         Toast.makeText(Login.this, message, Toast.LENGTH_SHORT).show();
                     }
@@ -136,6 +178,7 @@ public class Login extends AppCompatActivity {
             }
         }
     }
+
 
     // Método para ir a la actividad de registro
     public void goToSignUpActivity(View view) {

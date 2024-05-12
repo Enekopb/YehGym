@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1091147212630",
+    "project_id": "desarrollo-avanzado-software",
+    "storage_bucket": "desarrollo-avanzado-software.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1091147212630:android:e475462af49562502398f7",
+        "android_client_info": {
+          "package_name": "com.example.redact_book"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASBcqkSoHhWyDAxj-nz2LPviuhixlHvgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1091147212630:android:5f9a582c58e6e3592398f7",
+        "android_client_info": {
+          "package_name": "com.example.yehgym"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASBcqkSoHhWyDAxj-nz2LPviuhixlHvgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

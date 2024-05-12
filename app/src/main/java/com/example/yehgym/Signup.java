@@ -3,6 +3,7 @@ package com.example.yehgym;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,17 +22,36 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Signup extends AppCompatActivity {
 
     private EditText usernameEditText, emailEditText, passwordEditText, weightEditText;
     private RadioGroup genderRadioGroup;
     private Button signupButton;
+    DatabaseReference db;
+    Boolean firebaseConnection;
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            startActivity(new Intent(Signup.this, MainActivity.class));
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        db = FirebaseDatabase.getInstance().getReference("users");
         setContentView(R.layout.signup);
 
         // Obtener referencias a los elementos de la interfaz
@@ -52,6 +72,26 @@ public class Signup extends AppCompatActivity {
                 String password = passwordEditText.getText().toString().trim();
                 String weight = weightEditText.getText().toString().trim();
                 int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
+                /*
+                if (TextUtils.isEmpty(username)) {
+                    usernameEditText.setError("El nombre de usuario es requerido");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(email)) {
+                    emailEditText.setError("El correo electrónico es requerido");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(password)) {
+                    passwordEditText.setError("La contraseña es requerida");
+                    return;
+                }
+                if (TextUtils.isEmpty(weight)) {
+                    passwordEditText.setError("El peso esta vacio");
+                    return;
+                }
+                */
                 String gender = "";
                 if (selectedGenderId == R.id.maleRadioButton) {
                     gender = "Hombre";
@@ -96,10 +136,10 @@ public class Signup extends AppCompatActivity {
                 URL url = new URL(urlString);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
-
                 // Parámetros que se enviarán en la solicitud POST
                 String postData = "atleta=" + username + "&email=" + email + "&password=" + password + "&lang=" + lang + "&peso=" + peso + "&genero=" + genero;
                 urlConnection.setDoOutput(true);
+                Log.d("SignUpTask", postData);
                 urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
                 out.print(postData);
@@ -132,25 +172,57 @@ public class Signup extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String status = jsonObject.optString("status");
+                    Log.e("SignUpTask", "status: " + result);
                     if ("success".equals(status)) {
                         // Usuario creado correctamente
                         String message = jsonObject.optString("message");
-                        Toast.makeText(Signup.this, message, Toast.LENGTH_SHORT).show();
+                        JSONObject userData = jsonObject.optJSONObject("userData");
+                        if (userData != null) {
+                            String username = userData.optString("username");
+                            String email = userData.optString("email");
+                            String password = userData.optString("password");
+                            // Firebase Authentication
+                            try {
+                                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success
+                                        UserProfileChangeRequest req = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                        user.updateProfile(req);
+                                        ModeloUsuario usuario = new ModeloUsuario(FirebaseAuth.getInstance().getUid(), username, email, password);
+                                        db.child(FirebaseAuth.getInstance().getUid()).setValue(usuario);
+                                        Log.d("SignUpTask", "signInWithEmail:success");
+                                        // Continue with the server registration
+                                        firebaseConnection = true;
+                                    } else {
+                                        // Sign in failed
+                                        Log.e("SignUpTask", "signInWithEmail:failure", task.getException());
+                                    }
+                                });
+                            } catch (Exception e) {
+                                Log.e("SignUpTask", "Firebase authentication error: " + e.getMessage());
+                            }
+                        }
+                        // Mostrar Toast en el hilo principal
+                        runOnUiThread(() -> Toast.makeText(Signup.this, message, Toast.LENGTH_SHORT).show());
                         // Redirigir a la actividad de inicio de sesión
-                        Intent intent = new Intent(Signup.this, Login.class);
+                        Intent intent = new Intent(Signup.this, MainActivity.class);
+                        Log.e("Signup", "Username: " + usernameEditText.getText());
+                        intent.putExtra("name", usernameEditText.getText());
                         startActivity(intent);
                         finish(); // Finaliza la actividad de registro para que no pueda volver atrás
                     } else {
                         // Usuario no creado
                         String message = jsonObject.optString("message");
-                        Toast.makeText(Signup.this, message, Toast.LENGTH_SHORT).show();
+                        // Mostrar Toast en el hilo principal
+                        runOnUiThread(() -> Toast.makeText(Signup.this, message, Toast.LENGTH_SHORT).show());
                     }
                 } catch (JSONException e) {
                     Log.e("SignUpTask", "Error al procesar JSON: " + e.getMessage());
-                    Toast.makeText(Signup.this, R.string.server_error, Toast.LENGTH_SHORT).show();
+                    runOnUiThread(() -> Toast.makeText(Signup.this, R.string.server_error, Toast.LENGTH_SHORT).show());
                 }
             } else {
-                Toast.makeText(Signup.this, R.string.con_error, Toast.LENGTH_SHORT).show();
+                runOnUiThread(() -> Toast.makeText(Signup.this, R.string.con_error, Toast.LENGTH_SHORT).show());
             }
         }
     }

@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" >YehGym</string>
+    <string name="configuracion">Configuración</string>
+    <string name="english">Ingles</string>
+    <string name="castellano">Castellano</string>
+    <string name="oscuro">Oscuro</string>
+    <string name="claro">Claro</string>
+    <string name="btnCamara">Camara</string>
+    <string name="nombre">Nombre:</string>
+    <string name="altura">Altura:</string>
+    <string name="peso">Peso:</string>
 </resources>

@@ -10,4 +10,8 @@
     <string name="nombre">Name:</string>
     <string name="altura">Height:</string>
     <string name="peso">Weight:</string>
+    <string name="salir">Log out</string>
+    <string name="Calendario">Calendar</string>
+    <string name="calcularRutina">Plan Routine</string>
+    <string name="GimnasiosCerca">Gyms Nearby</string>
 </resources>

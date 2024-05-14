@@ -7,10 +7,9 @@
 
     <Button
         android:id="@+id/calendario"
-        android:layout_width="120dp"
+        android:layout_width="130dp"
         android:layout_height="70dp"
-        android:text="Calendario"
-        app:backgroundTint="@color/teal_700"
+        android:text="@string/Calendario"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"
@@ -20,10 +19,9 @@
 
     <Button
         android:id="@+id/calcRutina"
-        android:layout_width="120dp"
+        android:layout_width="130dp"
         android:layout_height="70dp"
-        android:text="Calcular rutina"
-        app:backgroundTint="@color/teal_700"
+        android:text="@string/calcularRutina"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.4"
@@ -33,10 +31,9 @@
 
     <Button
         android:id="@+id/chats"
-        android:layout_width="120dp"
+        android:layout_width="130dp"
         android:layout_height="80dp"
-        android:text="Chats"
-        app:backgroundTint="@color/teal_700"
+        android:text="Chat"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.25"
@@ -46,10 +43,9 @@
 
     <Button
         android:id="@+id/mapa"
-        android:layout_width="120dp"
+        android:layout_width="130dp"
         android:layout_height="80dp"
-        android:text="Gimnasios cerca"
-        app:backgroundTint="@color/teal_700"
+        android:text="@string/GimnasiosCerca"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.4"

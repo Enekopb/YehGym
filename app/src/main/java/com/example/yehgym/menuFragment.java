@@ -1,6 +1,10 @@
 package com.example.yehgym;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +20,18 @@ public class menuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.menufragment, container, false);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("config_tema", MODE_PRIVATE);
+        String temaGuardado = sharedPreferences.getString("tema", "DEFAULT");
+
+
+        // Aplicar el tema correspondiente
+        if (temaGuardado.equals("DEFAULT")) {
+            requireActivity().setTheme(R.style.AppThemeLight);
+            view.setBackgroundColor(Color.WHITE);
+        } else {
+            requireActivity().setTheme(R.style.AppThemeDark);
+            view.setBackgroundColor(Color.BLACK);
+        }
 
         Button botonCalendario = view.findViewById(R.id.calendario);
         botonCalendario.setOnClickListener(new View.OnClickListener() {

@@ -8,17 +8,17 @@
     android:background="#ece5dd">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbarMensaje"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="#4CAF50"
         app:titleTextColor="@color/white"/>
     
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/toolbarMensaje"
         android:layout_above="@id/envioMensaje"/>
     
     <RelativeLayout

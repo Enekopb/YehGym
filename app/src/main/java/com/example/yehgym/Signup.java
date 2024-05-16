@@ -42,10 +42,6 @@ public class Signup extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            startActivity(new Intent(Signup.this, MainActivity.class));
-            finish();
-        }
     }
 
     @Override
@@ -72,7 +68,6 @@ public class Signup extends AppCompatActivity {
                 String password = passwordEditText.getText().toString().trim();
                 String weight = weightEditText.getText().toString().trim();
                 int selectedGenderId = genderRadioGroup.getCheckedRadioButtonId();
-                /*
                 if (TextUtils.isEmpty(username)) {
                     usernameEditText.setError("El nombre de usuario es requerido");
                     return;
@@ -91,7 +86,6 @@ public class Signup extends AppCompatActivity {
                     passwordEditText.setError("El peso esta vacio");
                     return;
                 }
-                */
                 String gender = "";
                 if (selectedGenderId == R.id.maleRadioButton) {
                     gender = "Hombre";
@@ -191,7 +185,6 @@ public class Signup extends AppCompatActivity {
                                         user.updateProfile(req);
                                         ModeloUsuario usuario = new ModeloUsuario(FirebaseAuth.getInstance().getUid(), username, email, password);
                                         db.child(FirebaseAuth.getInstance().getUid()).setValue(usuario);
-                                        Log.d("SignUpTask", "signInWithEmail:success");
                                         // Continue with the server registration
                                         firebaseConnection = true;
                                     } else {
@@ -203,12 +196,10 @@ public class Signup extends AppCompatActivity {
                                 Log.e("SignUpTask", "Firebase authentication error: " + e.getMessage());
                             }
                         }
-                        // Mostrar Toast en el hilo principal
-                        runOnUiThread(() -> Toast.makeText(Signup.this, message, Toast.LENGTH_SHORT).show());
+                        Toast.makeText(Signup.this, message, Toast.LENGTH_SHORT).show();
                         // Redirigir a la actividad de inicio de sesión
-                        Intent intent = new Intent(Signup.this, MainActivity.class);
+                        Intent intent = new Intent(Signup.this, Login.class);
                         Log.e("Signup", "Username: " + usernameEditText.getText());
-                        intent.putExtra("name", usernameEditText.getText());
                         startActivity(intent);
                         finish(); // Finaliza la actividad de registro para que no pueda volver atrás
                     } else {

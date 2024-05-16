@@ -1,7 +1,6 @@
 package com.example.yehgym;
 
 import android.content.Intent;
-import android.media.metrics.EditingSession;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,9 +10,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-import androidx.appcompat.widget.Toolbar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,10 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Chat extends AppCompatActivity {
 
@@ -39,23 +40,22 @@ public class Chat extends AppCompatActivity {
     EditText mensajeTexto;
     RecyclerView recyclerView;
     MensajeAdaptador mensajeAdaptador;
+    private boolean isInForeground = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbarMensaje);
 
         dbUsuario = FirebaseDatabase.getInstance().getReference("users");
         recibidorId = getIntent().getStringExtra("id");
         recibidorNombre = getIntent().getStringExtra("user");
-        Log.e("Chat", "Id: " + recibidorId.toString() + " User:" + recibidorNombre);
-        getSupportActionBar().setTitle(recibidorNombre);
+        toolbar.setTitle(recibidorNombre);
         if (recibidorNombre!=null){
-            envioRoom = FirebaseAuth.getInstance().getUid()+recibidorId;
-            recibidorRoom = recibidorId+FirebaseAuth.getInstance().getUid();
+            envioRoom = FirebaseAuth.getInstance().getCurrentUser().getDisplayName()+recibidorNombre;
+            recibidorRoom = recibidorNombre+FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         }
         envioIcono = findViewById(R.id.iconoMensajeEnvio);
         mensajeAdaptador = new MensajeAdaptador(this);
@@ -75,12 +75,19 @@ public class Chat extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                     ModeloMensaje mensajeActual = dataSnapshot.getValue(ModeloMensaje.class);
                     mensajes.add(mensajeActual);
+                    Log.d("Chat", "Id: " + mensajeActual.getEnvioId() + " User" + FirebaseAuth.getInstance().getUid());
+                    // Marcar como leído si el mensaje no ha sido leído
+                    if (!mensajeActual.isRead() && isInForeground && !mensajeActual.getEnvioId().equals(FirebaseAuth.getInstance().getUid())) {
+                        dbRecibidor.child(mensajeActual.getMensajeId()).child("read").setValue(true);
+                    }
+
                 }
                 mensajeAdaptador.clear();
                 for (ModeloMensaje mens:mensajes){
                     mensajeAdaptador.add(mens);
                 }
                 mensajeAdaptador.notifyDataSetChanged();
+                recyclerView.scrollToPosition(mensajeAdaptador.getItemCount() - 1);
             }
 
             @Override
@@ -104,16 +111,34 @@ public class Chat extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isInForeground = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isInForeground = false;
+    }
+
+
     private void EnviarMensaje(String mensaje) {
-        String idMensaje = UUID.randomUUID().toString();
-        ModeloMensaje mensajeModelo = new ModeloMensaje(idMensaje, FirebaseAuth.getInstance().getUid(), mensaje);
+        String idMensaje = String.valueOf(System.currentTimeMillis()); // Obtener la fecha actual en milisegundos como identificador
+        long timestamp = Long.parseLong(idMensaje); // Convertir el idMensaje a long (si es necesario)
+        Date fecha = new Date(timestamp);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss:SSS", Locale.getDefault());
+        String fechaFormateada = sdf.format(fecha);
+        Log.e("Chat", fechaFormateada);
+        ModeloMensaje mensajeModelo = new ModeloMensaje(idMensaje, FirebaseAuth.getInstance().getUid(), mensaje, false);
         mensajeAdaptador.add(mensajeModelo);
 
         dbEnvio.child(idMensaje).setValue(mensajeModelo)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

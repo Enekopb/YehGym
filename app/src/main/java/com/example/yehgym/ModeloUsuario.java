@@ -3,6 +3,8 @@ package com.example.yehgym;
 public class ModeloUsuario {
 
     String id, username, email, password;
+    private boolean hasUnreadMessages;
+
 
     public ModeloUsuario() {
         // Default constructor required for Firebase
@@ -45,4 +47,12 @@ public class ModeloUsuario {
     public void setPassword(String password) {
         this.password = password;
     }
+    public boolean hasUnreadMessages() {
+        return hasUnreadMessages;
+    }
+
+    public void setHasUnreadMessages(boolean hasUnreadMessages) {
+        this.hasUnreadMessages = hasUnreadMessages;
+    }
+
 }

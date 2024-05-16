@@ -35,13 +35,22 @@ public class Login extends AppCompatActivity {
     private Button loginButton;
     DatabaseReference db;
     Boolean firebaseConnection;
+    private String email;
 
     @Override
     protected void onStart() {
         super.onStart();
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            startActivity(new Intent(Login.this, MenuInicio.class));
-            finish();
+            if (FirebaseAuth.getInstance().getCurrentUser().getEmail().contains("yehgym.eus"))
+            {
+                startActivity(new Intent(Login.this, ListaAtletas.class));
+                finish();
+            }
+            else {
+                startActivity(new Intent(Login.this, MenuInicio.class));
+                finish();
+            }
+
         }
     }
 
@@ -124,7 +133,7 @@ public class Login extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(result);
                     String status = jsonObject.optString("status");
                     String message = jsonObject.optString("message");
-                    String email = jsonObject.optString("email");
+                    email = jsonObject.optString("email");
                     String password = jsonObject.optString("password");
                     if ("success".equals(status))
                     {
@@ -148,13 +157,22 @@ public class Login extends AppCompatActivity {
                                     // Firebase Authentication
                                     editor.putBoolean("isLoggedIn", true);
                                     editor.apply();
-                                    // Redirigir a la actividad principal u otra actividad según tu flujo de la aplicación
-                                    Intent intent = new Intent(Login.this, MenuInicio.class);
-                                    intent.putExtra("name", username);
-                                    startActivity(intent);
-                                    finish(); // Finalizar la actividad de inicio de sesión para evitar volver atrás                                } else {
+                                    if (email.contains("yehgym.eus"))
+                                    {
+                                        Intent intent = new Intent(Login.this, ListaAtletas.class);
+                                        intent.putExtra("name", username);
+                                        startActivity(intent);
+                                        finish(); // Finalizar la actividad de inicio de sesión para evitar volver atrás
+                                    }
+                                    else {
+                                        Intent intent = new Intent(Login.this, MenuInicio.class);
+                                        intent.putExtra("name", username);
+                                        startActivity(intent);
+                                        finish(); // Finalizar la actividad de inicio de sesión para evitar volver atrás
+                                    }
+                                                       } else {
                                     // Sign in failed
-                                    Log.e("Login", "signInWithEmail:failure", task.getException());
+                                    Log.e("Login", "signInWithEmail:success", task.getException());
                                 }
                             });
                         }

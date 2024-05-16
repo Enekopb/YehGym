@@ -29,4 +29,21 @@
     <string name="calcularRutina">Planificar rutina</string>
     <string name="GimnasiosCerca">Gimnasios cerca</string>
     <string name="img_err">Error al subir la imagen</string>
+    <string name="bt_siguiente"> Siguiente </string>
+    <string name="bt_anterior"> Anterior </string>
+    <string name="nombre_usuario"> Nombre de usuario </string>
+    <string name="btRegistro"> Registrarse </string>
+    <string name="btLogin"> Logearse </string>
+    <string name="Logeate"> Logeate </string>
+    <string name="Registrate"> Registrate </string>
+    <string name="repetirContraseña"> Repetir contraseña </string>
+    <string name="entrenador"> Entrenador </string>
+    <string name="btGuardar"> Guardar </string>
+    <string name="listaUsuarios">Lista de atletas:</string>
+    <string name="btBuscar">Buscar</string>
+    <string name="agregarEjer">Agregar ejercicio</string>
+    <string name="agregarAtleta"> Agregar atleta</string>
+    <string name="google_calendar">GOOGLE CALENDAR</string>
+    <string name="chats">CHATS</string>
+
 </resources>

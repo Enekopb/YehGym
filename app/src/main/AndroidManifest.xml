@@ -12,7 +12,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.CAMERA" />
-
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -29,7 +30,7 @@
             android:name=".Signup"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ListaAmigos"
             android:exported="false" />
         <activity
             android:name=".Chat"
@@ -46,6 +47,11 @@
             </intent-filter>
 
         </activity>
+        <activity android:name=".MainActivity" android:launchMode="standard"></activity>
+        <activity android:name=".ListaAtletas" android:launchMode="standard"></activity>
+        <activity android:name=".entrenamiento" android:launchMode="standard"></activity>
+        <activity android:name=".calculaTuRutina" android:launchMode="standard"></activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -174,7 +173,7 @@ public class AdapterUsuario extends RecyclerView.Adapter<AdapterUsuario.MyViewHo
                 if ("success".equals(status)) {
                     Toast.makeText(contexto, message, Toast.LENGTH_SHORT).show();
                     //Recargar MainActivity
-                    if (contexto instanceof MainActivity) {
+                    if (contexto instanceof ListaAmigos) {
                         Log.e("EliminarAmigoTask", "Amigo borrado");
                         lista.clear();
                     }

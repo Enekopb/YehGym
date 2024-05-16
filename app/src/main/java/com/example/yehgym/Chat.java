@@ -36,7 +36,7 @@ public class Chat extends AppCompatActivity {
 
     String recibidorId, recibidorNombre, envioRoom, recibidorRoom;
     DatabaseReference dbRecibidor, dbEnvio, dbUsuario;
-    ImageView envioIcono;
+    ImageView envioIcono, toolbarBackIcon;
     EditText mensajeTexto;
     RecyclerView recyclerView;
     MensajeAdaptador mensajeAdaptador;
@@ -57,6 +57,13 @@ public class Chat extends AppCompatActivity {
             envioRoom = FirebaseAuth.getInstance().getCurrentUser().getDisplayName()+recibidorNombre;
             recibidorRoom = recibidorNombre+FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         }
+        toolbarBackIcon = findViewById(R.id.toolbar_icon);
+        toolbarBackIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         envioIcono = findViewById(R.id.iconoMensajeEnvio);
         mensajeAdaptador = new MensajeAdaptador(this);
         recyclerView = findViewById(R.id.recycler);

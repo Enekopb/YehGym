@@ -3,7 +3,6 @@ package com.example.yehgym;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,14 +20,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import java.util.Timer;
-import java.util.TimerTask;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,12 +39,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class ListaAmigos extends AppCompatActivity {
 
     RecyclerView recyclerView;
     AdapterUsuario adapter;
     DatabaseReference db;
-    ImageView amigoIcono;
+    ImageView amigoIcono, toolbarBackIcon;
     EditText amigoTexto;
     private String username;
     private String uID;
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.lista_amigos);
         Toolbar toolbar = findViewById(R.id.toolbar);
         username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -81,7 +78,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         toolbar.setTitle(username);
-
+        toolbarBackIcon = findViewById(R.id.toolbar_icon);
+        toolbarBackIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         // Iniciar el Timer para obtener amigos cada 5 segundos
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 if (mensaje.trim().length() > 0){
                     if (mensaje.equals(username))
                     {
-                        Toast.makeText(MainActivity.this, "No se puede añadir a uno mismo", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ListaAmigos.this, "No se puede añadir a uno mismo", Toast.LENGTH_SHORT).show();
                     }
                     else {
                         new AmigoTask().execute(mensaje, "en");
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(MainActivity.this, "La solicitud no puede estar vacía", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListaAmigos.this, "La solicitud no puede estar vacía", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -177,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 timer.cancel(); // Cancelar el Timer
             }
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(MainActivity.this, Login.class));
+            startActivity(new Intent(ListaAmigos.this, Login.class));
             finish();
             return true;
         }
@@ -301,17 +304,17 @@ public class MainActivity extends AppCompatActivity {
                     String status = jsonObject.optString("status");
                     String message = jsonObject.optString("message");
                     if ("success".equals(status)) {
-                        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ListaAmigos.this, message, Toast.LENGTH_SHORT).show();
                         new ObtenerAmigosTask().execute(username, "en");
                     } else {
-                        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ListaAmigos.this, message, Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     Log.e("LoginTask", "Error al procesar JSON: " + e.getMessage());
-                    Toast.makeText(MainActivity.this, R.string.server_error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListaAmigos.this, R.string.server_error, Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(MainActivity.this, R.string.con_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListaAmigos.this, R.string.con_error, Toast.LENGTH_SHORT).show();
             }
         }
     }

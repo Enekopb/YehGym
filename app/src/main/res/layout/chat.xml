@@ -12,7 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#4CAF50"
-        app:titleTextColor="@color/white"/>
+        app:titleTextColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/toolbar_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:src="@drawable/outline_arrow_back"
+            android:padding="16dp"/>
+    </androidx.appcompat.widget.Toolbar>
     
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"

@@ -64,7 +64,7 @@ public class menuFragment extends Fragment {
         botonChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), MainActivity.class);
+                Intent intent = new Intent(requireActivity(), ListaAmigos.class);
                 startActivity(intent);
             }
         });

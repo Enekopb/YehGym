@@ -15,4 +15,18 @@
     <string name="peso_kg">Kg</string>
     <string name="genero">Género: </string>
     <string name="genero_no_insertado">Género sin insertar</string>
+    <string name="configuracion">Configuración</string>
+    <string name="english">Ingles</string>
+    <string name="castellano">Castellano</string>
+    <string name="oscuro">Oscuro</string>
+    <string name="claro">Claro</string>
+    <string name="btnCamara">Camara</string>
+    <string name="nombre">Nombre:</string>
+    <string name="altura">Altura:</string>
+    <string name="peso">Peso:</string>
+    <string name="salir">Salir</string>
+    <string name="Calendario">Calendario</string>
+    <string name="calcularRutina">Planificar rutina</string>
+    <string name="GimnasiosCerca">Gimnasios cerca</string>
+    <string name="img_err">Error al subir la imagen</string>
 </resources>

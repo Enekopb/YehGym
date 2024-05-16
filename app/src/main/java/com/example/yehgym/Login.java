@@ -40,7 +40,7 @@ public class Login extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            startActivity(new Intent(Login.this, MainActivity.class));
+            startActivity(new Intent(Login.this, MenuInicio.class));
             finish();
         }
     }
@@ -149,7 +149,7 @@ public class Login extends AppCompatActivity {
                                     editor.putBoolean("isLoggedIn", true);
                                     editor.apply();
                                     // Redirigir a la actividad principal u otra actividad según tu flujo de la aplicación
-                                    Intent intent = new Intent(Login.this, MainActivity.class);
+                                    Intent intent = new Intent(Login.this, MenuInicio.class);
                                     intent.putExtra("name", username);
                                     startActivity(intent);
                                     finish(); // Finalizar la actividad de inicio de sesión para evitar volver atrás                                } else {

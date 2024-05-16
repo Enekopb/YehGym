@@ -186,24 +186,30 @@ public class MainActivity extends AppCompatActivity {
 
     // En el método actualizarListaAmigos:
     private void actualizarListaAmigos(List<String> friendList) {
-        db = FirebaseDatabase.getInstance().getReference("users");
-        db.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    ModeloUsuario user = data.getValue(ModeloUsuario.class);
-                    if (user != null && friendList.contains(user.getUsername())) {
-                        checkUnreadMessages(user);
+        if (friendList == null){
+            adapter.clear();
+        }
+        else {
+            db = FirebaseDatabase.getInstance().getReference("users");
+            db.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot data : snapshot.getChildren()) {
+                        ModeloUsuario user = data.getValue(ModeloUsuario.class);
+                        if (user != null && friendList.contains(user.getUsername())) {
+                            checkUnreadMessages(user);
+                        }
                     }
+                    recyclerView.setAdapter(adapter);
                 }
-                recyclerView.setAdapter(adapter);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("MainActivity", "Error en la base de datos: " + error.getMessage());
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e("MainActivity", "Error en la base de datos: " + error.getMessage());
+                }
+            });
+        }
+
     }
 
     private void checkUnreadMessages(ModeloUsuario user) {
@@ -368,6 +374,7 @@ public class MainActivity extends AppCompatActivity {
             if (friendList != null) {
                 actualizarListaAmigos(friendList);
             } else {
+                actualizarListaAmigos(null);
             }
         }
     }

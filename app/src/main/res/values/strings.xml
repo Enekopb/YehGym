@@ -14,4 +14,5 @@
     <string name="Calendario">Calendario</string>
     <string name="calcularRutina">Planificar rutina</string>
     <string name="GimnasiosCerca">Gimnasios cerca</string>
+    <string name="img_err">Error al subir la imagen</string>
 </resources>

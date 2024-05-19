@@ -45,5 +45,12 @@
     <string name="agregarAtleta"> Agregar atleta</string>
     <string name="google_calendar">GOOGLE CALENDAR</string>
     <string name="chats">CHATS</string>
+    <string name="FechaIni">Fecha de inicio</string>
+    <string name="FechaFin">Fecha final</string>
+    <string name="Frecuencia">Frecuencia</string>
+    <string name="Series">Series</string>
+    <string name="Ejercicio">Ejercicio</string>
+    <string name="Añadir">Añadir</string>
+    <string name="email">Email</string>
 
 </resources>

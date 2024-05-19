@@ -22,18 +22,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -43,7 +49,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Locale;
+import java.util.Objects;
+
 public class configuracionFragment extends Fragment {
 
     private static final String PREFERENCIAS_IDIOMA = "config_idioma";
@@ -104,6 +113,9 @@ public class configuracionFragment extends Fragment {
         Log.d("usuario firebase", user);
         new VerificarImagenTask().execute(URLVerificacion, user, "es");
 
+        String username = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+
+
         imgView = view.findViewById(R.id.imageView);
         Button buttonCamera = view.findViewById(R.id.btnCamara);
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button1 = view.findViewById(R.id.english);
@@ -111,6 +123,7 @@ public class configuracionFragment extends Fragment {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button3 = view.findViewById(R.id.claro);
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button4 = view.findViewById(R.id.Oscuro);
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button5 = view.findViewById(R.id.logout);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button6 = view.findViewById(R.id.btnGuardar);
 
         // Listener para el botón en inglés
         button1.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +175,35 @@ public class configuracionFragment extends Fragment {
             }
         });
 
+        // Listener para el botón de guardar
+        button6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText emailEditText = view.findViewById(R.id.editTextEmail);
+                EditText pesoEditText = view.findViewById(R.id.editTextPeso);
+
+                String email = emailEditText.getText().toString();
+                String peso = pesoEditText.getText().toString();
+
+                // Ejecutar la tarea de actualización de datos
+                if (email!=" " && peso!=" ") {
+                    UpdateUserDataTask updateUserDataTask = new UpdateUserDataTask();
+                    updateUserDataTask.execute(username, email, peso);
+                }
+                else{
+                    Toast.makeText(requireContext(), "Complete todos los campos", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //Cargar los datos en los campos
+        cargarDatos(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
     }
 
     private void cambiarIdioma(String languageCode) {
@@ -371,5 +412,154 @@ public class configuracionFragment extends Fragment {
             }
         }
     }
+
+    private void cargarDatos(String username) {
+        // Iniciar la tarea de cargar datos en segundo plano
+        GetUserDataTask getUserDataTask = new GetUserDataTask();
+        getUserDataTask.execute(username);
+    }
+
+    private class GetUserDataTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... username) {
+            // URL para la solicitud de datos del usuario
+            String urlString = "http://146.148.62.83:81/obtenerDatosUsuario.php";
+
+            try {
+                // Construir la URL con el parámetro del usuario
+
+                urlString = urlString + "?nombre=" + username[0].toString();
+
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+
+                int statusCode = urlConnection.getResponseCode();
+                if (statusCode == HttpURLConnection.HTTP_OK) {
+                    // Leer la respuesta del servidor si es necesario
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line).append("\n");
+                    }
+                    bufferedReader.close();
+                    return stringBuilder.toString();
+                } else {
+                    Log.e("GetUserDataTask", "Código de estado no válido: " + statusCode);
+                    return null;
+                }
+            } catch (IOException e) {
+                Log.e("GetUserDataTask", "Error en la conexión: " + e.getMessage());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String status = jsonObject.optString("status");
+                    if (status.equals("success")) {
+                        JSONObject usuarioObject = jsonObject.optJSONObject("usuario");
+                        if (usuarioObject != null) {
+                            String atleta = usuarioObject.optString("atleta");
+                            String email = usuarioObject.optString("email");
+                            String peso = usuarioObject.optString("peso");
+
+                            if (getView()!=null) {
+                                TextView nombreEditText = requireView().findViewById(R.id.editTextNombre);
+                                EditText pesoEditText = requireView().findViewById(R.id.editTextPeso);
+                                EditText emailEditText = requireView().findViewById(R.id.editTextEmail);
+
+                                nombreEditText.setText(atleta);
+                                pesoEditText.setText(peso);
+                                emailEditText.setText(email);
+                            }
+                        } else {
+                            Log.e("JSON", "No se pudo obtener el objeto 'usuario'");
+                        }
+                    } else {
+                        String message = jsonObject.optString("message");
+                        Log.e("JSON", "Error: " + message);
+                    }
+
+
+                } catch (JSONException e) {
+                    Log.e("GetUserDataTask", "Error al procesar JSON: " + e.getMessage());
+                }
+            } else {
+                Log.e("GetUserDataTask", "Respuesta nula del servidor");
+            }
+        }
+    }
+
+    private class UpdateUserDataTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String username = params[0];
+            String email = params[1];
+            String peso = params[2];
+
+            String urlString = "http://146.148.62.83:81/actualizarDatosUsuario.php";
+
+            try {
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setDoOutput(true);
+
+                // Construir los parámetros para la solicitud POST
+                String postData = "&email=" + URLEncoder.encode(email, "UTF-8")
+                        + "&peso=" + URLEncoder.encode(peso, "UTF-8")
+                        + "&username=" + URLEncoder.encode(username, "UTF-8");
+
+                urlConnection.getOutputStream().write(postData.getBytes());
+
+                int statusCode = urlConnection.getResponseCode();
+                if (statusCode == HttpURLConnection.HTTP_OK) {
+                    // Leer la respuesta del servidor
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line).append("\n");
+                    }
+                    bufferedReader.close();
+                    return stringBuilder.toString();
+                } else {
+                    Log.e("UpdateUserDataTask", "Código de estado no válido: " + statusCode);
+                    return null;
+                }
+            } catch (IOException e) {
+                Log.e("UpdateUserDataTask", "Error en la conexión: " + e.getMessage());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String status = jsonObject.optString("status");
+                    if (status.equals("success")) {
+                        Toast.makeText(requireContext(), "Datos actualizados correctamente", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String message = jsonObject.optString("message");
+                        Toast.makeText(requireContext(), "Error: " + message, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e("UpdateUserDataTask", "Error al procesar JSON: " + e.getMessage());
+                }
+            } else {
+                Log.e("UpdateUserDataTask", "Respuesta nula del servidor");
+            }
+        }
+    }
+
 
 }

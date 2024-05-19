@@ -46,20 +46,20 @@ import java.net.URL;
 import java.util.Locale;
 public class configuracionFragment extends Fragment {
 
-        private static final String PREFERENCIAS_IDIOMA = "config_idioma";
-        private static final String PREFERENCIAS_TEMA = "config_tema";
-        private static final String IDIOMA_PREF_KEY = "idioma";
-        private static final String TEMA_PREF_KEY = "tema";
-        private static final int REQUEST_CAMERA_PERMISSION = 10;
-        private static final int REQUEST_IMAGE_CAPTURE = 1;
-        private String user;
+    private static final String PREFERENCIAS_IDIOMA = "config_idioma";
+    private static final String PREFERENCIAS_TEMA = "config_tema";
+    private static final String IDIOMA_PREF_KEY = "idioma";
+    private static final String TEMA_PREF_KEY = "tema";
+    private static final int REQUEST_CAMERA_PERMISSION = 10;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private String user;
 
-        private Button btnCamara;
-        private Bitmap imgBitmap;
-        private final String URLVerificacion = "http://146.148.62.83:81/verificacionImagen.php";
-        private final String URLSubir = "http://146.148.62.83:81/subirImagen.php";
-        private ImageView imgView;
-        private final ActivityResultLauncher<Intent> takePictureLauncher =
+    private Button btnCamara;
+    private Bitmap imgBitmap;
+    private final String URLVerificacion = "http://146.148.62.83:81/verificacionImagen.php";
+    private final String URLSubir = "http://146.148.62.83:81/subirImagen.php";
+    private ImageView imgView;
+    private final ActivityResultLauncher<Intent> takePictureLauncher =
             registerForActivityResult(new
                     ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK && result.getData()!= null) {
@@ -73,144 +73,141 @@ public class configuracionFragment extends Fragment {
                 }
             });
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            // Inflate the layout for this fragment
-            View view = inflater.inflate(R.layout.configuracionfragment, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.configuracionfragment, container, false);
 
-            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFERENCIAS_TEMA, MODE_PRIVATE);
-            String temaGuardado = sharedPreferences.getString(TEMA_PREF_KEY, "DEFAULT");
-            MenuInicio activity = (MenuInicio) requireActivity();
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFERENCIAS_TEMA, MODE_PRIVATE);
+        String temaGuardado = sharedPreferences.getString(TEMA_PREF_KEY, "DEFAULT");
 
-            // Aplicar el tema correspondiente
-            if (temaGuardado.equals("DEFAULT")) {
-                requireActivity().setTheme(R.style.AppThemeLight);
-                view.setBackgroundColor(Color.WHITE);
-            } else {
-                requireActivity().setTheme(R.style.AppThemeDark);
-                view.setBackgroundColor(Color.BLACK);
+        // Aplicar el tema correspondiente
+        if (temaGuardado.equals("DEFAULT")) {
+            requireActivity().setTheme(R.style.AppThemeLight);
+            view.setBackgroundColor(Color.WHITE);
+        } else {
+            requireActivity().setTheme(R.style.AppThemeDark);
+            view.setBackgroundColor(Color.BLACK);
+        }
+
+        sharedPreferences = requireActivity().getSharedPreferences("config_idioma", MODE_PRIVATE);
+        String idiomaGuardado = sharedPreferences.getString("idioma", "values");
+        Locale nuevoLocale = new Locale(idiomaGuardado);
+        Locale.setDefault(nuevoLocale);
+        Configuration configuration = requireActivity().getBaseContext().getResources().getConfiguration();
+        configuration.setLocale(nuevoLocale);
+        requireActivity().getResources().updateConfiguration(configuration, requireActivity().getBaseContext().getResources().getDisplayMetrics());
+
+        // Cargar la foto
+        user = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        Log.d("usuario firebase", user);
+        new VerificarImagenTask().execute(URLVerificacion, user, "es");
+
+        imgView = view.findViewById(R.id.imageView);
+        Button buttonCamera = view.findViewById(R.id.btnCamara);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button1 = view.findViewById(R.id.english);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button2 = view.findViewById(R.id.castellano);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button3 = view.findViewById(R.id.claro);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button4 = view.findViewById(R.id.Oscuro);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button5 = view.findViewById(R.id.logout);
+
+        // Listener para el botón en inglés
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cambiarIdioma("en");
             }
+        });
 
-            sharedPreferences = requireActivity().getSharedPreferences("config_idioma", MODE_PRIVATE);
-            String idiomaGuardado = sharedPreferences.getString("idioma", "values");
-            Locale nuevoLocale = new Locale(idiomaGuardado);
-            Locale.setDefault(nuevoLocale);
-            Configuration configuration = requireActivity().getBaseContext().getResources().getConfiguration();
-            configuration.setLocale(nuevoLocale);
-            requireActivity().getResources().updateConfiguration(configuration, requireActivity().getBaseContext().getResources().getDisplayMetrics());
-
-            // Cargar la foto
-            String user = String.valueOf(FirebaseAuth.getInstance().getCurrentUser());
-            Log.d("usuario firebase", user);
-            new VerificarImagenTask().execute(URLVerificacion, user, "es");
-
-            imgView = view.findViewById(R.id.imageView);
-            Button buttonCamera = view.findViewById(R.id.btnCamara);
-            @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button1 = view.findViewById(R.id.english);
-            @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button2 = view.findViewById(R.id.castellano);
-            @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button3 = view.findViewById(R.id.claro);
-            @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button4 = view.findViewById(R.id.Oscuro);
-            @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button button5 = view.findViewById(R.id.logout);
-
-            // Listener para el botón en inglés
-            button1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    cambiarIdioma("en");
-                }
-            });
-
-            // Listener para el botón en castellano
-            button2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    cambiarIdioma("values");
-                }
-            });
-
-            // Listener para el botón en castellano
-            button3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) { updateTema("DEFAULT", container);
-                }
-            });
-
-            // Listener para el botón en castellano
-            button4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    updateTema("DARK", container);
-                }
-            });
-
-            button5.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    salir();
-                }
-            });
-            buttonCamera.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
-                    } else {
-                        // Si los permisos ya están concedidos, abrir la cámara
-                        abrirCamara();
-                    }
-                }
-            });
-
-            return view;
-        }
-
-        private void cambiarIdioma(String languageCode) {
-            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFERENCIAS_IDIOMA, MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(IDIOMA_PREF_KEY, languageCode);
-            editor.apply();
-
-            Locale nuevoLocale = new Locale(languageCode);
-            Locale.setDefault(nuevoLocale);
-            Configuration configuration = requireActivity().getBaseContext().getResources().getConfiguration();
-            configuration.setLocale(nuevoLocale);
-            requireActivity().getResources().updateConfiguration(configuration, requireActivity().getBaseContext().getResources().getDisplayMetrics());
-            requireActivity().recreate();
-        }
-
-        public void updateTema(String key, View view) {
-            Log.d("Eneko", key);
-            SharedPreferences sp = requireActivity().getSharedPreferences(PREFERENCIAS_TEMA, MODE_PRIVATE);
-            SharedPreferences.Editor objEditor = sp.edit();
-            objEditor.putString(TEMA_PREF_KEY, key);
-            objEditor.apply();
-            Log.d("Tema", sp.getString("tema", "DEFAULT"));
-            if (key.equals("DEFAULT")) {
-                // Se guarda al hacer el siguiente onCreate de la nueva actividad, no se aplica seguido.
-                requireActivity().setTheme(R.style.AppThemeLight);
-                view.setBackgroundColor(Color.WHITE);
-            } else {
-                requireActivity().setTheme(R.style.AppThemeDark);
-                view.setBackgroundColor(Color.BLACK);
+        // Listener para el botón en castellano
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cambiarIdioma("values");
             }
-            requireActivity().recreate();
-        }
+        });
 
-        private void salir(){
-            FirebaseAuth.getInstance().signOut();
-            // TODO: startActivity(new Intent(MainActivity.this, Login.class));
-            Intent i = new Intent(requireActivity(), MenuInicio.class);
-            startActivity(i);
-            requireActivity().finish();
+        // Listener para el botón en castellano
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { updateTema("DEFAULT", container);
+            }
+        });
+
+        // Listener para el botón en castellano
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateTema("DARK", container);
+            }
+        });
+
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                salir();
+            }
+        });
+        buttonCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+                } else {
+                    // Si los permisos ya están concedidos, abrir la cámara
+                    abrirCamara();
+                }
+            }
+        });
+
+        return view;
+    }
+
+    private void cambiarIdioma(String languageCode) {
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFERENCIAS_IDIOMA, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(IDIOMA_PREF_KEY, languageCode);
+        editor.apply();
+
+        Locale nuevoLocale = new Locale(languageCode);
+        Locale.setDefault(nuevoLocale);
+        Configuration configuration = requireActivity().getBaseContext().getResources().getConfiguration();
+        configuration.setLocale(nuevoLocale);
+        requireActivity().getResources().updateConfiguration(configuration, requireActivity().getBaseContext().getResources().getDisplayMetrics());
+        requireActivity().recreate();
+    }
+
+    public void updateTema(String key, View view) {
+        Log.d("Eneko", key);
+        SharedPreferences sp = requireActivity().getSharedPreferences(PREFERENCIAS_TEMA, MODE_PRIVATE);
+        SharedPreferences.Editor objEditor = sp.edit();
+        objEditor.putString(TEMA_PREF_KEY, key);
+        objEditor.apply();
+        Log.d("Tema", sp.getString("tema", "DEFAULT"));
+        if (key.equals("DEFAULT")) {
+            // Se guarda al hacer el siguiente onCreate de la nueva actividad, no se aplica seguido.
+            requireActivity().setTheme(R.style.AppThemeLight);
+            view.setBackgroundColor(Color.WHITE);
+        } else {
+            requireActivity().setTheme(R.style.AppThemeDark);
+            view.setBackgroundColor(Color.BLACK);
         }
+        requireActivity().recreate();
+    }
+
+    private void salir(){
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(requireActivity(), Login.class));
+        requireActivity().finish();
+    }
 
     // Método para abrir la cámara
-        private void abrirCamara() {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureLauncher.launch(intent);
-        }
+    private void abrirCamara() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureLauncher.launch(intent);
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -225,12 +222,12 @@ public class configuracionFragment extends Fragment {
             }
         }
     }
-        private String getStringImagen(Bitmap bmp) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] imageBytes = baos.toByteArray();
-            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        }
+    private String getStringImagen(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+    }
 
     private void subirFotoAlServidor(Bitmap bitmap) {
         // Convertir la imagen a Base64

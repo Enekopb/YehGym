@@ -1,6 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" >YehGym</string>
+    <string name="app_name">YehGym</string>
+    <string name="inicio_de_sesion">Inicio de sesión</string>
+    <string name="nombre_de_usuario">Nombre de usuario</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="no_tienes_una_cuenta">Create una cuenta</string>
+    <string name="server_error">Error al procesar la respuesta del servidor</string>
+    <string name="con_error">Error de conexión</string>
+    <string name="crear_cuenta_de_usuario">Crear cuenta de usuario</string>
+    <string name="correo_electronico">Correo electrónico</string>
+    <string name="crear_cuenta">Crear cuenta</string>
+    <string name="masculino">Hombre</string>
+    <string name="femenino">Mujer</string>
+    <string name="otro">Otro</string>
+    <string name="peso_kg">Kg</string>
+    <string name="genero">Género: </string>
+    <string name="genero_no_insertado">Género sin insertar</string>
     <string name="configuracion">Configuración</string>
     <string name="english">Ingles</string>
     <string name="castellano">Castellano</string>
@@ -15,4 +29,21 @@
     <string name="calcularRutina">Planificar rutina</string>
     <string name="GimnasiosCerca">Gimnasios cerca</string>
     <string name="img_err">Error al subir la imagen</string>
+    <string name="bt_siguiente"> Siguiente </string>
+    <string name="bt_anterior"> Anterior </string>
+    <string name="nombre_usuario"> Nombre de usuario </string>
+    <string name="btRegistro"> Registrarse </string>
+    <string name="btLogin"> Logearse </string>
+    <string name="Logeate"> Logeate </string>
+    <string name="Registrate"> Registrate </string>
+    <string name="repetirContraseña"> Repetir contraseña </string>
+    <string name="entrenador"> Entrenador </string>
+    <string name="btGuardar"> Guardar </string>
+    <string name="listaUsuarios">Lista de atletas:</string>
+    <string name="btBuscar">Buscar</string>
+    <string name="agregarEjer">Agregar ejercicio</string>
+    <string name="agregarAtleta"> Agregar atleta</string>
+    <string name="google_calendar">GOOGLE CALENDAR</string>
+    <string name="chats">CHATS</string>
+
 </resources>

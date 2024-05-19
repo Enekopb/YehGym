@@ -3,6 +3,7 @@ package com.example.yehgym;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -56,6 +57,15 @@ public class menuFragment extends Fragment {
                 FragmentTransaction replace = transaction.replace(R.id.container, mf);
                 transaction.addToBackStack(null);
                 transaction.commit();
+            }
+        });
+
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button botonChat = view.findViewById(R.id.chats);
+        botonChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), ListaAmigos.class);
+                startActivity(intent);
             }
         });
         return view;

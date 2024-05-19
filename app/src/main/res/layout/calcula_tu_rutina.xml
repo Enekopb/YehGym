@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".calculaTuRutina">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!-- Primer LinearLayout con dos EditText para las fechas -->
+    <LinearLayout
+        android:id="@+id/fechas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/include"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTextFechaInicio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Fecha de inicio"/>
+
+        <EditText
+            android:id="@+id/editTextFechaFinal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Fecha final"/>
+    </LinearLayout>
+
+    <!-- EditText para la frecuencia -->
+    <EditText
+        android:id="@+id/editTextFrecuencia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/fechas"
+        app:layout_constraintStart_toStartOf="parent"
+        android:hint="Frecuencia"/>
+
+    <!-- LinearLayouts con TextViews y EditTexts -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/editTextFrecuencia"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical">
+
+        <!-- Primer LinearLayout con TextViews y EditTexts -->
+        <LinearLayout
+            android:id="@+id/LL1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/ETEjer1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Ejercicio"/>
+
+            <EditText
+                android:id="@+id/ETSeries1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Series"/>
+
+            <EditText
+                android:id="@+id/ETReps1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Repeticiones"/>
+
+            <EditText
+                android:id="@+id/ETRPE1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="RPE"/>
+        </LinearLayout>
+
+        <!-- Segundo LinearLayout con TextViews y EditTexts -->
+        <LinearLayout
+            android:id="@+id/LL2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/ETEjer2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Ejercicio"/>
+
+            <EditText
+                android:id="@+id/ETSeries2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Series"/>
+
+            <EditText
+                android:id="@+id/ETReps2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Repeticiones"/>
+
+            <EditText
+                android:id="@+id/ETRPE2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="RPE"/>
+        </LinearLayout>
+
+        <!-- Tercer LinearLayout con TextViews y EditTexts -->
+        <LinearLayout
+            android:id="@+id/LL3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/ETEjer3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Ejercicio"/>
+
+            <EditText
+                android:id="@+id/ETSeries3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Series"/>
+
+            <EditText
+                android:id="@+id/ETReps3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Repeticiones"/>
+
+            <EditText
+                android:id="@+id/ETRPE3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="RPE"/>
+        </LinearLayout>
+
+        <!-- Cuarto LinearLayout con TextViews y EditTexts -->
+        <LinearLayout
+            android:id="@+id/LL4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/ETEjer4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Ejercicio"/>
+
+            <EditText
+                android:id="@+id/ETSeries4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Series"/>
+
+            <EditText
+                android:id="@+id/ETReps4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Repeticiones"/>
+
+            <EditText
+                android:id="@+id/ETRPE4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="RPE"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/botonEnviar"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:text="Añadir">
+
+        </Button>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

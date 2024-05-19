@@ -83,7 +83,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Repeticiones"/>
+                android:hint="Reps"/>
 
             <EditText
                 android:id="@+id/ETRPE1"
@@ -119,7 +119,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Repeticiones"/>
+                android:hint="Reps"/>
 
             <EditText
                 android:id="@+id/ETRPE2"
@@ -155,7 +155,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Repeticiones"/>
+                android:hint="Reps"/>
 
             <EditText
                 android:id="@+id/ETRPE3"
@@ -191,7 +191,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Repeticiones"/>
+                android:hint="Reps"/>
 
             <EditText
                 android:id="@+id/ETRPE4"

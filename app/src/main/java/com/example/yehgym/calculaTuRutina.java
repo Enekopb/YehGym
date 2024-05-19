@@ -38,8 +38,8 @@ public class calculaTuRutina extends AppCompatActivity {
     private EditText editTextFrecuencia;
     private String languageCode = "es";
     private String urlServidor = "http://146.148.62.83:81/";
-    private static final String PREFERENCIAS_TEMA = "preferencias_tema";
-    private static final String TEMA_PREF_KEY = "tema_pref_key";
+    private static final String PREFERENCIAS_TEMA = "config_tema";
+    private static final String TEMA_PREF_KEY = "tema";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +49,10 @@ public class calculaTuRutina extends AppCompatActivity {
 
         // Aplicar el tema correspondiente
         if (temaGuardado.equals("DEFAULT")) {
+            Log.d("tema", "claro");
             setTheme(R.style.AppThemeLight);
         } else {
+            Log.d("tema", "oscuro");
             setTheme(R.style.AppThemeDark);
         }
 

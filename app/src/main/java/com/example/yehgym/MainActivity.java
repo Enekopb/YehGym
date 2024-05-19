@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
     private String urlServidor = "http://146.148.62.83:81/";
     private String languageCode = "es";
     private adaptadorRecycler eladaptador ;
-    private static final String PREFERENCIAS_TEMA = "preferencias_tema";
-    private static final String TEMA_PREF_KEY = "tema_pref_key";
+    private static final String PREFERENCIAS_TEMA = "config_tema";
+    private static final String TEMA_PREF_KEY = "tema";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -175,4 +175,7 @@ public class Chat extends AppCompatActivity {
         }
         return false;
     }
+    public void menu(View view){
+        finish();
+    }
 }

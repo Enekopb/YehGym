@@ -89,7 +89,6 @@ public class ListaAtletas extends AppCompatActivity {
                 //i.putExtra("idioma",idioma);
                 //i.putExtra("tema",tema);
                 startActivity(i);
-                finish();
             }
         });
 
@@ -129,7 +128,6 @@ public class ListaAtletas extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(ListaAtletas.this, calculaTuRutina.class);
                 startActivity(i);
-                finish();
             }
         });
 
@@ -174,6 +172,9 @@ public class ListaAtletas extends AppCompatActivity {
         elManager.notify(1, elBuilder.build());
     }
 
+    public void menu(View view){
+        //No hace na
+    }
 
     public void onBackPressed() {
         super.onBackPressed();

@@ -163,7 +163,6 @@ public class entrenamiento extends AppCompatActivity {
     }
 
 
-
     protected void cambiarIdioma(String idioma){
         Locale nuevaloc = new Locale(idioma);
         Locale.setDefault(nuevaloc);

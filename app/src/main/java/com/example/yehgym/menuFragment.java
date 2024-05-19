@@ -34,19 +34,6 @@ public class menuFragment extends Fragment {
             view.setBackgroundColor(Color.BLACK);
         }
 
-        Button botonCalendario = view.findViewById(R.id.calendario);
-        botonCalendario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calendarioFragment cf = new calendarioFragment();
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                FragmentTransaction replace = transaction.replace(R.id.container, cf);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button botonMapa = view.findViewById(R.id.mapa);
         botonMapa.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +52,24 @@ public class menuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(requireActivity(), ListaAmigos.class);
+                startActivity(intent);
+            }
+        });
+
+        Button botonCalendario = view.findViewById(R.id.calendario);
+        botonCalendario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button botonPlanificar = view.findViewById(R.id.calcRutina);
+        botonPlanificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), calculaTuRutina.class);
                 startActivity(intent);
             }
         });

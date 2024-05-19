@@ -1,6 +1,7 @@
 package com.example.yehgym;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,9 +38,21 @@ public class calculaTuRutina extends AppCompatActivity {
     private EditText editTextFrecuencia;
     private String languageCode = "es";
     private String urlServidor = "http://146.148.62.83:81/";
+    private static final String PREFERENCIAS_TEMA = "preferencias_tema";
+    private static final String TEMA_PREF_KEY = "tema_pref_key";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCIAS_TEMA, MODE_PRIVATE);
+        String temaGuardado = sharedPreferences.getString(TEMA_PREF_KEY, "DEFAULT");
+
+        // Aplicar el tema correspondiente
+        if (temaGuardado.equals("DEFAULT")) {
+            setTheme(R.style.AppThemeLight);
+        } else {
+            setTheme(R.style.AppThemeDark);
+        }
 
         setContentView(R.layout.calcula_tu_rutina);
 
@@ -133,6 +146,10 @@ public class calculaTuRutina extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void menu(View view){
+        finish();
     }
 
     private class InsertarDatos extends AsyncTask<String, Void, String> {

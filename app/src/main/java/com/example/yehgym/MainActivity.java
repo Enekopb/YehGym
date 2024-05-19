@@ -10,9 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.MenuItem;
@@ -48,6 +50,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Fragment menuFragment;
     private String dia ;
     private String mes;
     private String año;
@@ -65,10 +68,22 @@ public class MainActivity extends AppCompatActivity {
     private String urlServidor = "http://146.148.62.83:81/";
     private String languageCode = "es";
     private adaptadorRecycler eladaptador ;
+    private static final String PREFERENCIAS_TEMA = "preferencias_tema";
+    private static final String TEMA_PREF_KEY = "tema_pref_key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCIAS_TEMA, MODE_PRIVATE);
+        String temaGuardado = sharedPreferences.getString(TEMA_PREF_KEY, "DEFAULT");
+
+        // Aplicar el tema correspondiente
+        if (temaGuardado.equals("DEFAULT")) {
+            setTheme(R.style.AppThemeLight);
+        } else {
+            setTheme(R.style.AppThemeDark);
+        }
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -252,6 +267,10 @@ public class MainActivity extends AppCompatActivity {
 
         Context context = getBaseContext().createConfigurationContext(configuration);
         getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+    }
+
+    public void menu(View view){
+        finish();
     }
 
     private class hayEntreno extends AsyncTask<String, Void, String> {

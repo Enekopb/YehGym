@@ -2,26 +2,29 @@
 <resources>
 
     <!-- Estilo para el tema claro -->
-    <style name="AppThemeLight" parent="Theme.AppCompat.Light">
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Color del toolbar -->
         <item name="colorPrimary">#808080</item>
         <!-- Color del texto del toolbar -->
         <item name="android:textColorPrimary">#FFFFFF</item>
         <!-- Color del fondo de la actividad -->
         <item name="android:windowBackground">#FFFFFF</item>
+        <item name="colorPrimaryVariant">#FFFFFF</item>
         <!-- Color de los botones -->
         <item name="colorAccent">#FF4081</item>
         <!-- Otros atributos de estilo aquí -->
     </style>
 
     <!-- Estilo para el tema oscuro -->
-    <style name="AppThemeDark" parent="Theme.AppCompat">
+    <style name="AppThemeDark" parent="Theme.AppCompat.NoActionBar">
         <!-- Color del toolbar -->
         <item name="colorPrimary">#FF5722</item>
         <!-- Color del texto del toolbar -->
         <item name="android:textColorPrimary">#FFFFFF</item>
         <!-- Color del fondo de la actividad -->
         <item name="android:windowBackground">#000000</item>
+        <item name="colorPrimaryVariant">#000000</item>
+
         <!-- Color de los botones -->
         <item name="colorAccent">#00BCD4</item>
         <!-- Otros atributos de estilo aquí -->

@@ -72,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            idioma = extras.getString("idioma");
+            //idioma = extras.getString("idioma");
             String pMes= extras.getString("mes");
             String pAño= extras.getString("año");
             String pNombre = extras.getString("atleta");
             String pEntrenador = extras.getString("entrenador");
-            tema = extras.getInt("tema");
+            //tema = extras.getInt("tema");
 
-            setTheme(tema);
+            //setTheme(tema);
             if(pMes != null && pAño != null){
                 if (pMes.length() == 2) { // Verificar si pMes tiene dos dígitos
                     mes = pMes;
@@ -92,10 +92,11 @@ public class MainActivity extends AppCompatActivity {
             nombreEntrenador = pEntrenador;
             fecha = "00/" + mes + "/"+ año;
         }
+        /*
         if(idioma != null){
             cambiarIdioma(idioma);
-        }
-        setContentView(R.layout.menu_inicio);
+        }*/
+        setContentView(R.layout.activity_main);
         solicitarPermisosNotificaciones(); //Pedimos permisos, si todavia no tiene
 
         RecyclerView laLista = findViewById(R.id.rv);
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         mes = fechaLista[1];
         año = fechaLista[2];
         TextView tv = findViewById(R.id.fecha);
+        Log.i("mes y año",mes + " " + año);
         tv.setText(obtenerNombreMes(Integer.parseInt(mes)) + " "+ año);
         diaMes = new String[obtenerDiasMes(Integer.parseInt(mes),Integer.parseInt(año))];
         for (int i = 0; i < diaMes.length ; i++) {

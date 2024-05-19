@@ -83,11 +83,11 @@ public class ListaAtletas extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 Log.i("etiqueta", ((TextView)view).getText().toString()+", "+position+", "+id);
-                Intent i = new Intent(ListaAtletas.this, ListaAmigos.class);
+                Intent i = new Intent(ListaAtletas.this, MainActivity.class);
                 i.putExtra("atleta", ((TextView)view).getText().toString());
                 i.putExtra("entrenador",entrenador);
-                i.putExtra("idioma",idioma);
-                i.putExtra("tema",tema);
+                //i.putExtra("idioma",idioma);
+                //i.putExtra("tema",tema);
                 startActivity(i);
                 finish();
             }

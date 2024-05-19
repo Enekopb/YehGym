@@ -64,7 +64,7 @@ public class ListaAmigos extends AppCompatActivity {
         if (intent != null) {
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                username = extras.get("name").toString();
+                //username = extras.get("name").toString();
                 Log.d("MainActivity", "Todos los extras del Intent:");
                 for (String key : extras.keySet()) {
                     Object value = extras.get(key);
